@@ -1,4 +1,4 @@
-# Pause_MiSTer
+# Pause_MiSTer [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/mrjimmystones.svg?style=social&label=Follow%20%40mrjimmystones)](https://twitter.com/mrjimmystones) <span class="badge-buymeacoffee"><a href="https://ko-fi.com/jimmystones" title="Buy Me a Coffee at ko-fi.com'"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me a Coffee at ko-fi.com'" /></a></span>
 
 This is a generic module for MiSTer arcade cores which simplifies pausing the CPU based on user input, OSD status and signals from the high score module.
 
