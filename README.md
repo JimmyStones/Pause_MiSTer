@@ -12,6 +12,8 @@ Created by Jim Gregory ([JimmyStones](https://github.com/jimmystones)) [![Twitte
 ### History
 #### 0001 - 2021-04-17
 - First marked release
+#### 0002 - 2021-08-28
+- Add optional output of dim_video signal (currently used by Galaga) 
 
 ## Implementation instructions
 
@@ -61,6 +63,12 @@ See [Module parameters](#Module-parameters) for further details.
 ### Core specific implementation
 
 The pause_cpu signal should be passed through the the main core module and used to halt any relevant CPUs or other processes.
+
+If video output dimming within the module causes issues (if used in Galaga for example the vertical positioning is offset) then use this macro to enable dim_video as an output signal to handle dimming within the core separately.
+
+```verilog
+`define PAUSE_OUTPUT_DIM
+```
 
 ### Module parameters
 
