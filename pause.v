@@ -63,8 +63,8 @@ localparam 		pause_in_osd	= 1'b0;
 localparam 		dim_video_timer= 1'b1;
 
 reg				pause_toggle	= 1'b0;					// User paused (active-high)
-reg [28:0]		pause_timer		= 1'b0;					// Time since pause
-reg [28:0]		dim_timeout		= (CLKSPD*10000000);	// Time until video output dim (10 seconds @ CLKSPD Mhz)
+reg [31:0]		pause_timer		= 1'b0;					// Time since pause
+reg [31:0]		dim_timeout		= (CLKSPD*10000000);	// Time until video output dim (10 seconds @ CLKSPD Mhz)
 `ifndef PAUSE_OUTPUT_DIM
 reg				dim_video;				 				// Dim video requested (active-high)
 `endif
