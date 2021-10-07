@@ -29,6 +29,7 @@
  0001 - 2021-03-15 -	First marked release
  0002 - 2021-08-28 -	Add optional output of dim_video signal
  0003 - 2021-09-22 -	Convert dim_video to sequential logic to ease timing issues
+ 0004 - 2021-10-07 -	Convert pause_cpu to sequential logic to ease timing issues
 ============================================================================
 */
 module pause #(
@@ -50,7 +51,7 @@ module pause #(
 	input	[(GW-1):0]				g,							// Green channel
 	input	[(BW-1):0]				b,							// Blue channel
 
-	output							pause_cpu,				// Pause signal to CPU (active-high)
+	output reg						pause_cpu,				// Pause signal to CPU (active-high)
 `ifdef PAUSE_OUTPUT_DIM
 	output reg						dim_video,				// Dim video requested (active-high)
 `endif
@@ -59,17 +60,15 @@ module pause #(
 );
 
 // Option constants
-localparam 		pause_in_osd	= 1'b0;
-localparam 		dim_video_timer= 1'b1;
+localparam 		pause_in_osd	= 1'b0;					// Index in options for Pause when in OSD
+localparam 		dim_video_timer= 1'b1;					// Index in options for Dim video after 10 seconds
+localparam		dim_timeout		= (CLKSPD*10000000); // Time until video output dim (10 seconds @ CLKSPD Mhz)
 
 reg				pause_toggle	= 1'b0;					// User paused (active-high)
 reg [31:0]		pause_timer		= 1'b0;					// Time since pause
-reg [31:0]		dim_timeout		= (CLKSPD*10000000);	// Time until video output dim (10 seconds @ CLKSPD Mhz)
 `ifndef PAUSE_OUTPUT_DIM
 reg				dim_video;				 				// Dim video requested (active-high)
 `endif
-
-assign pause_cpu = (pause_request | pause_toggle  | (OSD_STATUS & options[pause_in_osd])) & !reset;
 
 always @(posedge clk_sys) begin
 
@@ -81,10 +80,19 @@ always @(posedge clk_sys) begin
 	// Clear user pause on reset
 	if(pause_toggle && reset) pause_toggle <= 0;
 
+	if(reset)
+	begin
+		pause_cpu <= 1'b0;
+	end
+	else
+	begin
+		pause_cpu <= (pause_request | pause_toggle  | (OSD_STATUS & options[pause_in_osd]));
+	end
+	
 	if(pause_cpu && options[dim_video_timer])
 	begin
 		// Track pause duration for video dim
-		if((pause_timer<dim_timeout))
+		if(pause_timer<dim_timeout)
 		begin
 			pause_timer <= pause_timer + 1'b1;
 			dim_video <= 1'b0;

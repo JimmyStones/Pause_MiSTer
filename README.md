@@ -16,6 +16,8 @@ Created by Jim Gregory ([JimmyStones](https://github.com/jimmystones)) [![Twitte
 - Add optional output of dim_video signal (currently used by Galaga) 
 #### 0003 - 2021-09-22
 - Convert dim_video to sequential logic to ease timing issues
+#### 0004 - 2021-10-07
+- Convert pause_cpu to sequential logic to ease timing issues
 
 ## Implementation instructions
 
